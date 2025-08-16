@@ -7,8 +7,8 @@
     <link rel="icon" type="image/jpeg" href="BOOS_logo_20250813_00_.png">
     <style>
         body {
-            background: #0a0a1a; /* Dark cosmic background */
-            color: #e0e0e0; /* Light gray text for readability */
+            background: #0a0a1a;
+            color: #e0e0e0;
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
@@ -16,103 +16,191 @@
             text-align: center;
         }
         header {
-            background: rgba(10, 10, 26, 0.9); /* Dark semi-transparent */
+            background: rgba(10, 10, 26, 0.9);
             padding: 20px;
             text-align: center;
-            border-bottom: 2px solid #a855f7; /* Purple border */
-            position: relative;
+            border-bottom: 2px solid #a855f7;
+            z-index: 100;
+            transition: transform 0.3s ease-in-out;
+        }
+        header.hidden {
+            transform: translateY(-100%);
         }
         .logo {
-            width: 150px;
-            vertical-align: middle;
-            margin-right: 10px;
-            max-width: 400px;
+            width: 300px;
             display: block;
             margin: 20px auto;
-            border-radius: 1000px;
-            filter: drop-shadow(0 0 10px #ec4899);
+            border-radius: 50%;
+            filter: drop-shadow(0 0 15px #ec4899);
+            transition: transform 0.3s;
+        }
+        .logo:hover {
+            transform: rotate(360deg);
         }
         header h1 {
-            display: inline;
-            margin: 0;
-            font-size: 36px;
-            color: #fbbf24; /* Gold */
+            font-size: 42px;
+            color: #fbbf24;
+            text-shadow: 0 0 10px #fbbf24;
         }
         .contract-info {
-            margin-top: 10px;
-            font-size: 14px;
+            font-size: 16px;
             color: #a855f7;
         }
         .contract-info a {
             color: #ec4899;
             text-decoration: none;
+            transition: color 0.3s;
         }
         .contract-info a:hover {
-            text-decoration: underline;
+            color: #fbbf24;
         }
         .intro {
-            max-width: 800px;
-            margin: 40px auto;
-            padding: 20px;
+            max-width: 900px;
+            margin: 50px auto;
+            padding: 30px;
             text-align: center;
+            animation: fadeIn 2s ease-in-out;
         }
-        .chapter {
-            max-width: 800px;
-            margin: 20px auto;
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .intro img {
+            width: 100%;
+            max-width: 350px;
+            border-radius: 10px;
+            filter: drop-shadow(0 0 10px #ec4899);
+        }
+        .toc {
+            max-width: 900px;
+            margin: 30px auto;
             padding: 20px;
             background: rgba(10, 10, 26, 0.8);
             border-radius: 10px;
-            border: 1px solid #3b82f6; /* Blue border */
+            border: 1px solid #a855f7;
+        }
+        .toc h2 {
+            color: #fbbf24;
+        }
+        .toc ul {
+            list-style: none;
+            padding: 0;
+        }
+        .toc li a {
+            color: #ec4899;
+            text-decoration: none;
+            font-size: 18px;
+            display: block;
+            padding: 10px;
+            transition: background 0.3s;
+        }
+        .toc li a:hover {
+            background: rgba(236, 72, 153, 0.2);
+        }
+        .chapters {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            transition: all 0.3s ease;
+        }
+        .chapter {
+            background: rgba(10, 10, 26, 0.8);
+            border-radius: 10px;
+            border: 1px solid #3b82f6;
+            padding: 20px;
+            animation: fadeIn 1s ease-in-out;
+            box-shadow: 0 0 15px #ec4899;
+            transition: transform 0.3s, z-index 0.3s, opacity 0.3s;
+            cursor: pointer;
+            position: relative;
+            z-index: 1;
+        }
+        .chapter:hover {
+            transform: scale(1.1);
+            z-index: 10;
+        }
+        .chapters:hover .chapter:not(:hover) {
+            transform: scale(0.95);
+            opacity: 0.8;
+        }
+        .chapter.fullscreen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 1000;
+            transform: scale(1);
+            background: rgba(10, 10, 26, 0.95);
+            overflow-y: auto;
+            padding: 40px;
+            box-sizing: border-box;
+        }
+        .chapter.fullscreen::before {
+            content: 'Close';
+            position: absolute;
+            top: 10px;
+            right: 20px;
+            color: #fbbf24;
+            font-size: 20px;
+            cursor: pointer;
         }
         .chapter h2 {
             color: #a855f7;
-            text-align: center;
         }
         .chapter-number {
             color: #ec4899;
-            font-size: 18px;
-            text-align: center;
+            font-size: 20px;
         }
         .chapter img {
             width: 100%;
-            max-width: 400px;
-            display: block;
-            margin: 20px auto;
+            max-width: 350px;
             border-radius: 10px;
             filter: drop-shadow(0 0 10px #ec4899);
         }
-        img {
-            width: 100%;
-            max-width: 400px;
-            display: block;
-            margin: 20px auto;
-            border-radius: 10px;
-            filter: drop-shadow(0 0 10px #ec4899);
+        .news-section {
+            max-width: 900px;
+            margin: 50px auto;
+            padding: 30px;
+            background: rgba(236, 72, 153, 0.1);
+            border-radius: 15px;
+            box-shadow: 0 0 20px #fbbf24;
+        }
+        .partner-button {
+            background: #fbbf24;
+            color: #0a0a1a;
+            border: none;
+            padding: 15px 30px;
+            cursor: pointer;
+            border-radius: 8px;
+            font-size: 18px;
+            box-shadow: 0 0 15px #fbbf24;
+            transition: background 0.3s, transform 0.3s;
+        }
+        .partner-button:hover {
+            background: #ec4899;
+            color: #fff;
+            transform: scale(1.05);
         }
         footer {
             background: rgba(10, 10, 26, 0.9);
-            padding: 10px;
+            padding: 15px;
             text-align: center;
-            width: 100%;
             border-top: 2px solid #a855f7;
-        }
-        footer p {
-            margin: 0;
-        }
-        .socials {
-            text-align: center;
-            margin: 20px 0;
         }
         .socials a {
             color: #fbbf24;
-            margin: 0 15px;
+            margin: 0 20px;
             text-decoration: none;
-            font-size: 18px;
+            font-size: 20px;
+            transition: color 0.3s;
         }
         .socials a:hover {
-            text-decoration: underline;
+            color: #ec4899;
         }
-        /* Enhanced particle effect */
         .particles {
             position: fixed;
             top: 0;
@@ -125,28 +213,28 @@
         .particle {
             position: absolute;
             border-radius: 50%;
-            animation: particles 10s linear infinite;
-            opacity: 0.5;
+            animation: particles 8s linear infinite;
+            opacity: 0.6;
         }
         .particle.purple { background: #a855f7; }
         .particle.blue { background: #3b82f6; }
         .particle.pink { background: #ec4899; }
+        .particle.gold { background: #fbbf24; }
         @keyframes particles {
-            0% { transform: translateY(0); opacity: 0.5; }
-            100% { transform: translateY(-100vh); opacity: 0; }
+            0% { transform: translateY(0) rotate(0deg); opacity: 0.6; }
+            100% { transform: translateY(-120vh) rotate(360deg); opacity: 0; }
         }
         .socials-top {
             display: flex;
             justify-content: center;
-            align-items: center;
-            gap: 10px;
-            margin-top: 10px;
-            font-size: 14px;
+            gap: 15px;
+            margin-top: 15px;
         }
         .socials-top img {
-            width: 50px;
-            height: 50px;
-            border-radius: 100;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            filter: drop-shadow(0 0 5px #ec4899);
         }
         #toggleMusic {
             position: absolute;
@@ -158,32 +246,13 @@
             padding: 10px 20px;
             cursor: pointer;
             border-radius: 5px;
-            box-shadow: 0 0 5px #a855f7;
-            animation: pulse 1.5s infinite alternate ease-in-out;
-            z-index: 10;
-        }
-        #toggleMusic:hover {
-            background: #ec4899;
-        }
-        #toggleMusic.shake {
-            animation: shake 0.3s ease-in-out;
+            box-shadow: 0 0 10px #a855f7;
+            animation: pulse 1.5s infinite;
         }
         @keyframes pulse {
-            from {
-                box-shadow: 0 0 5px #a855f7;
-                transform: scale(1);
-            }
-            to {
-                box-shadow: 0 0 15px #ec4899;
-                transform: scale(1.05);
-            }
-        }
-        @keyframes shake {
-            0%, 100% { transform: translateX(0); }
-            20% { transform: translateX(-3px) rotate(-2deg); }
-            40% { transform: translateX(3px) rotate(2deg); }
-            60% { transform: translateX(-2px) rotate(-1deg); }
-            80% { transform: translateX(2px) rotate(1deg); }
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
         }
     </style>
 </head>
@@ -195,7 +264,7 @@
     <header>
         <button id="toggleMusic" onclick="toggleMusic()">Play Sound</button>
         <img class="logo" src="BOOS_logo_20250813_00_.png" alt="$BOOS Logo">
-        <h1>Book of Solana</h1>
+        <h1>The Book of Solana</h1>
         <div class="contract-info">
             <div class="socials-top">
                 <a href="https://x.com/boos_cto" target="_blank">
@@ -209,139 +278,189 @@
             <a href="https://dexscreener.com/solana/gfjfgxkmzb9pwrmxwsb4wakguiokknpu72v4kqwpmdqa" target="_blank">DexScreener</a> |
             <a href="https://pump.fun/GFJfGXKMZb9PWRMXWSb4WAkguiokknpu72v4KQwPmdqA" target="_blank">Pump.fun</a> |
             <a href="https://raydium.io/swap/?inputCurrency=sol&outputCurrency=GFJfGXKMZb9PWRMXWSb4WAkguiokknpu72v4KQwPmdqA" target="_blank">Raydium</a>
-            <br>
-            <br> Contract Address: GFJfGXKMZb9PWRMXWSb4WAkguiokknpu72v4KQwPmdqA
+            <br><br> Contract Address: GFJfGXKMZb9PWRMXWSb4WAkguiokknpu72v4KQwPmdqA
         </div>
     </header>
     <div class="intro">
         <h2>The Book of Solana</h2>
-        <p>The Book of Solana stands as a sacred manuscript, a celestial archive, and an eternal guide to the memecoins that traverse the vast expanse of the Solana blockchain. Forged in the cosmic forge of innovation and bound by the unbreakable chains of decentralized technology, this tome encapsulates the essence of digital sovereignty, community-driven finance, and the boundless potential of the Solana ecosystem. Within its ethereal pages lie the chronicles of memecoins—digital artifacts born from the fusion of humor, culture, and cutting-edge technology. Each memecoin, a star in the Solana constellation, carries with it the whispers of collective imagination and the roar of viral phenomena. As guardians of the blockchain, we inscribe these tales to illuminate the path for future explorers, ensuring that the wisdom of Solana's memecoins endures through the ages. 
-            <br><br> Solana - the most goated chain!</p>
+        <p>The Book of Solana stands as a sacred manuscript, a celestial archive, and an eternal guide to the memecoins that traverse the vast expanse of the Solana blockchain. Forged in the cosmic forge of innovation and bound by the unbreakable chains of decentralized technology, this tome encapsulates the essence of digital sovereignty, community-driven finance, and the boundless potential of the Solana ecosystem. Within its ethereal pages lie the chronicles of memecoins—digital artifacts born from the fusion of humor, culture, and cutting-edge technology. Each memecoin, a star in the Solana constellation, carries with it the whispers of collective imagination and the roar of viral phenomena. As guardians of the blockchain, we inscribe these tales to illuminate the path for future explorers, ensuring that the wisdom of Solana's memecoins endures through the ages.
+<br><br> Solana - the most goated chain!</p>
         <img src="logo-sol-goat.png" alt="GOAT Mascot Reading the Book of Solana">
     </div>
-    <div class="chapter">
-        <p class="chapter-number">1 / 17</p>
-        <h2>I. The Genesis of the Internet</h2>
-        <img src="https://pbs.twimg.com/media/GxDjjXpa8AEkFY9.jpg" alt="Illustration related to Solana Genesis">
-        <p>In the primordial chaos of the digital void, the Internet emerged as a revolutionary force, weaving together disparate minds across the globe. Born from the ARPANET in the late 1960s, it evolved into the World Wide Web in the 1990s, thanks to visionaries like Tim Berners-Lee. This interconnected network democratized information, fostering innovation, communication, and commerce on an unprecedented scale. The Internet's genesis laid the foundation for the digital age, where ideas could spread like wildfire, setting the stage for the cultural phenomena that would follow.</p>
+    <div class="toc">
+        <h2>Table of Contents</h2>
+        <ul>
+            <li><a href="#chapter1">I. The Genesis of the Internet</a></li>
+            <li><a href="#chapter2">II. The Rise of Memes</a></li>
+            <li><a href="#chapter3">III. Memecoins on the Solana Blockchain</a></li>
+            <li><a href="#chapter4">IV. The Evolution of Memecoins</a></li>
+            <li><a href="#chapter5">V. The Emergence of BONK</a></li>
+            <li><a href="#chapter6">VI. The Birth of WIF</a></li>
+            <li><a href="#chapter7">VII. The Future of Memecoins</a></li>
+            <li><a href="#chapter8">VIII. The Integration of Memecoins and DeFi</a></li>
+            <li><a href="#chapter9">IX. The Role of Memecoins in Community Building</a></li>
+            <li><a href="#chapter10">X. Challenges and Opportunities</a></li>
+            <li><a href="#chapter11">XI. The Potential Impact of Memecoins on Society</a></li>
+            <li><a href="#chapter12">XII. Regulation and Security in Memecoin Trading</a></li>
+            <li><a href="#chapter13">XIII. A Bridge Between Digital and Real-World Value</a></li>
+            <li><a href="#chapter14">XIV. The Influence of Memecoins on the Future of Crypto</a></li>
+            <li><a href="#chapter15">XV. The Role of Memecoins in the Metaverse</a></li>
+            <li><a href="#chapter16">XVI. The Potential of Memecoins as Decentralized Currencies</a></li>
+            <li><a href="#chapter17">XVII. The Eternal Legacy of $BOOS</a></li>
+            <li><a href="#chapter18">XVIII. The Surge of $POPCAT in 2025</a></li>
+            <li><a href="#chapter19">XIX. GOATseus Maximus: The New GOAT</a></li>
+            <li><a href="#chapter20">XX. FARTCOIN and Absurd Memes</a></li>
+        </ul>
     </div>
-    <div class="chapter">
-        <p class="chapter-number">2 / 17</p>
-        <h2>II. The Rise of Memes</h2>
-        <img src="https://pbs.twimg.com/media/GxA3_Lub0AAcCYD.jpg" alt="GOAT in Psychedelic Setting Representing Meme Culture">
-        <p>From the early days of image macros on forums like 4chan to the viral sensations on platforms like Reddit and Twitter, memes have become the lingua franca of the Internet. Coined by Richard Dawkins in 1976, the term "meme" describes ideas that propagate through culture. In the digital era, memes evolved into humorous, relatable content that captures collective experiences, often using images, videos, and text. Their rapid spread and adaptability have made them powerful tools for social commentary, marketing, and community building.</p>
+    <div class="chapters">
+        <div class="chapter" id="chapter1">
+            <p class="chapter-number">1 / 20</p>
+            <h2>I. The Genesis of the Internet</h2>
+            <img src="https://pbs.twimg.com/media/GxDjjXpa8AEkFY9.jpg" alt="Illustration related to Solana Genesis">
+            <p>In the primordial chaos of the digital void, the Internet emerged as a revolutionary force, weaving together disparate minds across the globe. Born from the ARPANET in the late 1960s, it evolved into the World Wide Web in the 1990s, thanks to visionaries like Tim Berners-Lee. This interconnected network democratized information, fostering innovation, communication, and commerce on an unprecedented scale. The Internet's genesis laid the foundation for the digital age, where ideas could spread like wildfire, setting the stage for the cultural phenomena that would follow.</p>
+        </div>
+        <div class="chapter" id="chapter2">
+            <p class="chapter-number">2 / 20</p>
+            <h2>II. The Rise of Memes</h2>
+            <img src="https://pbs.twimg.com/media/GxA3_Lub0AAcCYD.jpg" alt="GOAT in Psychedelic Setting Representing Meme Culture">
+            <p>From the early days of image macros on forums like 4chan to the viral sensations on platforms like Reddit and Twitter, memes have become the lingua franca of the Internet. Coined by Richard Dawkins in 1976, the term "meme" describes ideas that propagate through culture. In the digital era, memes evolved into humorous, relatable content that captures collective experiences, often using images, videos, and text. Their rapid spread and adaptability have made them powerful tools for social commentary, marketing, and community building.</p>
+        </div>
+        <div class="chapter" id="chapter3">
+            <p class="chapter-number">3 / 20</p>
+            <h2>III. Memecoins on the Solana Blockchain</h2>
+            <img src="https://pbs.twimg.com/media/Gw_DrpkbsAAdpzX.jpg" alt="GOAT Writing Trends">
+            <p>Solana, known for its high-speed and low-cost transactions, has become a fertile ground for memecoins. Launched in 2020 by Anatoly Yakovenko, Solana's innovative Proof of History consensus mechanism enables thousands of transactions per second. Memecoins like BONK and WIF have thrived here, leveraging Solana's efficiency to create vibrant, community-driven economies. These tokens blend humor and speculation, attracting a new wave of users to the blockchain.</p>
+        </div>
+        <div class="chapter" id="chapter4">
+            <p class="chapter-number">4 / 20</p>
+            <h2>IV. The Evolution of Memecoins</h2>
+            <img src="https://pbs.twimg.com/media/Gw8-EZOb0AAdQTx.jpg" alt="GOAT in Library Turning Pages">
+            <p>Memecoins have evolved from simple joke currencies like Dogecoin to sophisticated assets with real utility. On Solana, this evolution is marked by integrations with DeFi protocols, NFTs, and gaming. What began as viral hype has matured into projects with governance tokens, staking mechanisms, and charitable initiatives, demonstrating the potential for memecoins to drive meaningful engagement and innovation.</p>
+        </div>
+        <div class="chapter" id="chapter5">
+            <p class="chapter-number">5 / 20</p>
+            <h2>V. The Emergence of BONK</h2>
+            <img src="bonk.webp" alt="bonk">
+            <p>BONK, Solana's first major memecoin, emerged as a response to the FTX collapse, aiming to restore community spirit. Launched in December 2022, it quickly gained traction through airdrops to Solana users and NFT holders. BONK's success revitalized the Solana ecosystem, proving that memecoins could serve as catalysts for recovery and growth in turbulent times.</p>
+        </div>
+        <div class="chapter" id="chapter6">
+            <p class="chapter-number">6 / 20</p>
+            <h2>VI. The Birth of WIF</h2>
+            <img src="wif.jpeg" alt="wif">
+            <p>dogwifhat (WIF), featuring a Shiba Inu wearing a knitted hat, captured the imagination of the Solana community in late 2023. Its absurd yet endearing mascot propelled it to viral fame, with listings on major exchanges and integrations into various dApps. WIF exemplifies how simple, relatable concepts can explode in popularity within the fast-paced Solana environment.</p>
+        </div>
+        <div class="chapter" id="chapter7">
+            <p class="chapter-number">7 / 20</p>
+            <h2>VII. The Future of Memecoins</h2>
+            <img src="future.jpeg" alt="Epic Book of Solana Illustration">
+            <p>As Solana continues to scale with upgrades like Firedancer, memecoins are poised to play a larger role in Web3. Future developments may include AI-integrated memes, cross-chain interoperability, and sustainable tokenomics. The Book of Solana envisions a future where memecoins not only entertain but also empower users in decentralized economies.</p>
+        </div>
+        <div class="chapter" id="chapter8">
+            <p class="chapter-number">8 / 20</p>
+            <h2>VIII. The Integration of Memecoins and DeFi</h2>
+            <img src="book1.jpg" alt="boos">
+            <p>On Solana, memecoins are increasingly integrated with DeFi platforms like Raydium and Jupiter. This fusion allows for liquidity provision, yield farming, and automated trading, turning fun tokens into financial instruments. Such integrations enhance utility and attract serious investors to the memecoin space.</p>
+        </div>
+        <div class="chapter" id="chapter9">
+            <p class="chapter-number">9 / 20</p>
+            <h2>IX. The Role of Memecoins in Community Building</h2>
+            <img src="goat2.jpg" alt="boos">
+            <p>Memecoins foster strong communities through shared humor and collective goals. On Solana, projects like $BOOS encourage participation via raids, contests, and governance. These tokens create a sense of belonging, turning holders into active contributors to the ecosystem's growth and narrative.</p>
+        </div>
+        <div class="chapter" id="chapter10">
+            <p class="chapter-number">10 / 20</p>
+            <h2>X. Challenges and Opportunities</h2>
+            <img src="book3.jpg" alt="boos">
+            <p>While memecoins face volatility and regulatory scrutiny, Solana's speed offers opportunities for innovation. Challenges like network congestion are being addressed, opening doors for more stable and feature-rich memecoin projects.</p>
+        </div>
+        <div class="chapter" id="chapter11">
+            <p class="chapter-number">11 / 20</p>
+            <h2>XI. The Potential Impact of Memecoins on Society</h2>
+            <img src="goat1.jpg" alt="boos">
+            <p>Memecoins democratize finance, introducing new generations to blockchain. On Solana, they promote financial literacy and community-driven philanthropy, potentially reshaping societal views on money and collaboration.</p>
+        </div>
+        <div class="chapter" id="chapter12">
+            <p class="chapter-number">12 / 20</p>
+            <h2>XII. Regulation and Security in Memecoin Trading</h2>
+            <img src="book2.jpg" alt="boos">
+            <p>As memecoins grow, regulatory frameworks evolve. Solana's ecosystem emphasizes security through audits and decentralized exchanges, helping mitigate rugs and scams while complying with emerging laws.</p>
+        </div>
+        <div class="chapter" id="chapter13">
+            <p class="chapter-number">13 / 20</p>
+            <h2>XIII. A Bridge Between Digital and Real-World Value</h2>
+            <img src="goat4.jpg" alt="boos">
+            <p>Memecoins on Solana are bridging digital assets with real-world applications, from merchandise to events. This connection enhances their value beyond speculation, creating tangible benefits for holders.</p>
+        </div>
+        <div class="chapter" id="chapter14">
+            <p class="chapter-number">14 / 20</p>
+            <h2>XIV. The Influence of Memecoins on the Future of Crypto</h2>
+            <img src="goat3.jpg" alt="boos">
+            <p>Memecoins drive adoption and innovation on Solana, influencing broader crypto trends. Their cultural impact could shape the next era of blockchain, blending entertainment with technology.</p>
+        </div>
+        <div class="chapter" id="chapter15">
+            <p class="chapter-number">15 / 20</p>
+            <h2>XV. The Role of Memecoins in the Metaverse</h2>
+            <img src="goat5.jpg" alt="boos">
+            <p>In Solana-based metaverses, memecoins serve as in-game currencies and social tokens, enhancing immersive experiences and virtual economies.</p>
+        </div>
+        <div class="chapter" id="chapter16">
+            <p class="chapter-number">16 / 20</p>
+            <h2>XVI. The Potential of Memecoins as Decentralized Currencies</h2>
+            <img src="goat6.jpg" alt="boos">
+            <p>With Solana's scalability, memecoins could evolve into everyday decentralized currencies, facilitating microtransactions and global remittances with speed and low fees.</p>
+        </div>
+        <div class="chapter" id="chapter17">
+            <p class="chapter-number">17 / 20</p>
+            <h2>XVII. The Eternal Legacy of $BOOS</h2>
+            <img src="goat4.jpg" alt="boos">
+            <p>As the chronicler of Solana's memecoin saga, $BOOS stands eternal, inviting all to contribute to its pages and shape the future of decentralized storytelling.</p>
+        </div>
+        <div class="chapter" id="chapter18">
+            <p class="chapter-number">18 / 20</p>
+            <h2>XVIII. The Surge of $POPCAT in 2025</h2>
+            <img src="popcat.png" alt="POPCAT Meme">
+            <p>In 2025, $POPCAT exploded as a top Solana memecoin, reaching over $1B market cap with its viral cat-popping meme. Driven by community hype and listings on major exchanges, it symbolized the playful yet profitable side of Solana's ecosystem, attracting millions in volume.</p>
+        </div>
+        <div class="chapter" id="chapter19">
+            <p class="chapter-number">19 / 20</p>
+            <h2>XIX. GOATseus Maximus: The New GOAT</h2>
+            <img src="goatse-maximus.jpg" alt="GOAT Memecoin">
+            <p>$GOAT (GOATseus Maximus) emerged in 2025 as a contender for Solana's top spot, blending goat memes with community-driven utility. Its rapid rise to $500M+ cap highlighted Solana's speed in turning absurd ideas into massive value.</p>
+        </div>
+        <div class="chapter" id="chapter20">
+            <p class="chapter-number">20 / 20</p>
+            <h2>XX. FARTCOIN and Absurd Memes</h2>
+            <img src="fartcoin.webp" alt="FARTCOIN">
+            <p>FARTCOIN captured 2025's absurd meme trend on Solana, hitting high volumes with its humorous theme. It proved that even the silliest concepts can thrive on Solana's low-fee, high-speed chain, drawing in fun-loving traders.</p>
+        </div>
     </div>
-    <div class="chapter">
-        <p class="chapter-number">3 / 17</p>
-        <h2>III. Memecoins on the Solana Blockchain</h2>
-        <img src="https://pbs.twimg.com/media/Gw_DrpkbsAAdpzX.jpg" alt="GOAT Writing Trends">
-        <p>Solana, known for its high-speed and low-cost transactions, has become a fertile ground for memecoins. Launched in 2020 by Anatoly Yakovenko, Solana's innovative Proof of History consensus mechanism enables thousands of transactions per second. Memecoins like BONK and WIF have thrived here, leveraging Solana's efficiency to create vibrant, community-driven economies. These tokens blend humor and speculation, attracting a new wave of users to the blockchain.</p>
-    </div>
-    <div class="chapter">
-        <p class="chapter-number">4 / 17</p>
-        <h2>IV. The Evolution of Memecoins</h2>
-        <img src="https://pbs.twimg.com/media/Gw8-EZOb0AAdQTx.jpg" alt="GOAT in Library Turning Pages">
-        <p>Memecoins have evolved from simple joke currencies like Dogecoin to sophisticated assets with real utility. On Solana, this evolution is marked by integrations with DeFi protocols, NFTs, and gaming. What began as viral hype has matured into projects with governance tokens, staking mechanisms, and charitable initiatives, demonstrating the potential for memecoins to drive meaningful engagement and innovation.</p>
-    </div>
-    <div class="chapter">
-        <p class="chapter-number">5 / 17</p>
-        <h2>V. The Emergence of BONK</h2>
-        <img src="bonk.webp" alt="bonk">
-        <p>BONK, Solana's first major memecoin, emerged as a response to the FTX collapse, aiming to restore community spirit. Launched in December 2022, it quickly gained traction through airdrops to Solana users and NFT holders. BONK's success revitalized the Solana ecosystem, proving that memecoins could serve as catalysts for recovery and growth in turbulent times.</p>
-    </div>
-    <div class="chapter">
-        <p class="chapter-number">6 / 17</p>
-        <h2>VI. The Birth of WIF</h2>
-        <img src="wif.jpeg" alt="wif">
-        <p>dogwifhat (WIF), featuring a Shiba Inu wearing a knitted hat, captured the imagination of the Solana community in late 2023. Its absurd yet endearing mascot propelled it to viral fame, with listings on major exchanges and integrations into various dApps. WIF exemplifies how simple, relatable concepts can explode in popularity within the fast-paced Solana environment.</p>
-    </div>
-    <div class="chapter">
-        <p class="chapter-number">7 / 17</p>
-        <h2>VII. The Future of Memecoins</h2>
-        <img src="https://pbs.twimg.com/media/Gwxpzrya8AA_ZaH.jpg" alt="Epic Book of Solana Illustration">
-        <p>As Solana continues to scale with upgrades like Firedancer, memecoins are poised to play a larger role in Web3. Future developments may include AI-integrated memes, cross-chain interoperability, and sustainable tokenomics. The Book of Solana envisions a future where memecoins not only entertain but also empower users in decentralized economies.</p>
-    </div>
-    <div class="chapter">
-        <p class="chapter-number">8 / 17</p>
-        <h2>VIII. The Integration of Memecoins and DeFi</h2>
-        <img src="book1.jpg" alt="boos">
-        <p>On Solana, memecoins are increasingly integrated with DeFi platforms like Raydium and Jupiter. This fusion allows for liquidity provision, yield farming, and automated trading, turning fun tokens into financial instruments. Such integrations enhance utility and attract serious investors to the memecoin space.</p>
-    </div>
-    <div class="chapter">
-        <p class="chapter-number">9 / 17</p>
-        <h2>IX. The Role of Memecoins in Community Building</h2>
-        <img src="goat2.jpg" alt="boos">
-        <p>Memecoins foster strong communities through shared humor and collective goals. On Solana, projects like $BOOS encourage participation via raids, contests, and governance. These tokens create a sense of belonging, turning holders into active contributors to the ecosystem's growth and narrative.</p>
-    </div>
-    <div class="chapter">
-        <p class="chapter-number">10 / 17</p>
-        <h2>X. Challenges and Opportunities</h2>
-        <img src="book3.jpg" alt="boos">
-        <p>While memecoins face volatility and regulatory scrutiny, Solana's speed offers opportunities for innovation. Challenges like network congestion are being addressed, opening doors for more stable and feature-rich memecoin projects.</p>
-    </div>
-    <div class="chapter">
-        <p class="chapter-number">11 / 17</p>
-        <h2>XI. The Potential Impact of Memecoins on Society</h2>
-        <img src="goat1.jpg" alt="boos">
-        <p>Memecoins democratize finance, introducing new generations to blockchain. On Solana, they promote financial literacy and community-driven philanthropy, potentially reshaping societal views on money and collaboration.</p>
-    </div>
-    <div class="chapter">
-        <p class="chapter-number">12 / 17</p>
-        <h2>XII. Regulation and Security in Memecoin Trading</h2>
-        <img src="book2.jpg" alt="boos">
-        <p>As memecoins grow, regulatory frameworks evolve. Solana's ecosystem emphasizes security through audits and decentralized exchanges, helping mitigate rugs and scams while complying with emerging laws.</p>
-    </div>
-    <div class="chapter">
-        <p class="chapter-number">13 / 17</p>
-        <h2>XIII. A Bridge Between Digital and Real-World Value</h2>
-        <img src="goat4.jpg" alt="boos">
-        <p>Memecoins on Solana are bridging digital assets with real-world applications, from merchandise to events. This connection enhances their value beyond speculation, creating tangible benefits for holders.</p>
-    </div>
-    <div class="chapter">
-        <p class="chapter-number">14 / 17</p>
-        <h2>XIV. The Influence of Memecoins on the Future of Crypto</h2>
-         <img src="goat3.jpg" alt="boos">
-        <p>Memecoins drive adoption and innovation on Solana, influencing broader crypto trends. Their cultural impact could shape the next era of blockchain, blending entertainment with technology.</p>
-    </div>
-    <div class="chapter">
-        <p class="chapter-number">15 / 17</p>
-        <h2>XV. The Role of Memecoins in the Metaverse</h2>
-        <img src="goat5.jpg" alt="boos">
-        <p>In Solana-based metaverses, memecoins serve as in-game currencies and social tokens, enhancing immersive experiences and virtual economies.</p>
-    </div>
-    <div class="chapter">
-        <p class="chapter-number">16 / 17</p>
-        <h2>XVI. The Potential of Memecoins as Decentralized Currencies for the Near Future</h2>
-         <img src="goat6.jpg" alt="boos">
-        <p>With Solana's scalability, memecoins could evolve into everyday decentralized currencies, facilitating microtransactions and global remittances with speed and low fees.</p>
-    </div>
-    <div class="chapter">
-        <p class="chapter-number">17 / 17</p>
-        <h2>XVII. The Eternal Legacy of $BOOS</h2>
-        <img src="goat4.jpg" alt="boos">
-        <p>As the chronicler of Solana's memecoin saga, $BOOS stands eternal, inviting all to contribute to its pages and shape the future of decentralized storytelling.</p>
-    </div>
+<!--    <div class="news-section">
+        <h2>Latest News from Sol Times</h2>
+        <p>Stay updated with real-time stories from the Solana chain via our partner @Sol_Times. Dive into community tales, market flips, and more!</p>
+        <a href="soltimes.html"><button class="partner-button">Read Sol Times</button></a>
+    </div> -->
     <div class="socials">
         <a href="https://x.com/boos_cto" target="_blank">X (@boos_cto)</a>
         <a href="https://t.me/BOOSRealCTO" target="_blank">Telegram</a>
+   <!--     <a href="soltimes.html" target="_blank">Sol Times</a> -->
     </div>
     <footer>
         <p>&copy; 2025 Book of Solana. All rights reserved. Powered by BOOS.</p>
     </footer>
     <script>
-        // Enhanced particles with colors
+        // Enhanced particles
         const particlesContainer = document.getElementById('particles');
-        const colors = ['purple', 'blue', 'pink'];
-        for (let i = 0; i < 100; i++) {
+        const colors = ['purple', 'blue', 'pink', 'gold'];
+        for (let i = 0; i < 150; i++) {
             const particle = document.createElement('div');
             particle.classList.add('particle');
             const color = colors[Math.floor(Math.random() * colors.length)];
             particle.classList.add(color);
-            particle.style.width = `${Math.random() * 5 + 1}px`;
+            particle.style.width = `${Math.random() * 6 + 2}px`;
             particle.style.height = particle.style.width;
             particle.style.left = `${Math.random() * 100}vw`;
             particle.style.top = '100vh';
-            particle.style.animationDuration = `${Math.random() * 5 + 5}s`;
+            particle.style.animationDuration = `${Math.random() * 4 + 4}s`;
             particle.style.animationDelay = `${Math.random() * 5}s`;
             particlesContainer.appendChild(particle);
         }
@@ -350,8 +469,6 @@
         function toggleMusic() {
             const music = document.getElementById('bgMusic');
             const button = document.getElementById('toggleMusic');
-            button.classList.add('shake');
-            setTimeout(() => button.classList.remove('shake'), 300);
             if (!isPlaying) {
                 music.play();
                 button.textContent = 'Pause Sound';
@@ -362,6 +479,24 @@
                 isPlaying = false;
             }
         }
+
+        // Smooth scrolling for TOC links
+        document.querySelectorAll('.toc a').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Fullscreen chapter on click
+      //  document.querySelectorAll('.chapter').forEach(chapter => {
+        //    chapter.addEventListener('click', (e) => {
+         //       if (e.target.classList.contains('fullscreen') || e.target.tagName === 'A' || e.target.closest('a')) return;
+         //       chapter.classList.toggle('fullscreen');
+        //    });
+      //  });
     </script>
 </body>
 </html>
